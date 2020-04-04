@@ -690,7 +690,7 @@ const FormComponent = () => {
             <Button ml="4" leftIcon="delete" variantColor="red" type="button" onClick={() => { localStorage.removeItem(key); document.location.reload(); }}>
               Reset Data
             </Button>
-            <Button ml="4" leftIcon="view" variantColor="green" type="button" onClick={() => { setBody(sample as ResumeBody); document.location.reload(); }}>
+            <Button ml="4" leftIcon="view" variantColor="green" type="button" onClick={() => { setBody(sample as ResumeBody); }}>
               Sample
             </Button>
             <br />

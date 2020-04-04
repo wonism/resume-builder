@@ -34,71 +34,59 @@ pdfMake.fonts = {
 
 pdfMake.vfs = vfs;
 
-const buildExperienceTable = (experiences: Experience[], color: Color) => experiences?.map((experience, index, arr) => {
-  if (Boolean(experience.company) && Boolean(experience.role) && Boolean(experience.startDate) && Boolean(experience.endDate) && Boolean(experience.description)) {
-    return [
-      {
-        layout: 'noBorders',
-        table: {
-          headerRows: 1,
-          widths: ['*'],
-          body: [
-            [
-              {
-                columns: [
-                  { text: `${experience.role}, ${experience.company}`, style: 'strong', width: 'auto', alignment: 'bottom' },
-                  { text: experience.link, style: ['small', 'link'], width: '*', alignment: 'bottom', color: theme[color].normal },
-                ],
-                columnGap: 8,
-              },
+const buildExperienceTable = (experiences: Experience[], color: Color) => experiences?.map((experience, index, arr) => ([
+  {
+    layout: 'noBorders',
+    table: {
+      headerRows: 1,
+      widths: ['*'],
+      body: [
+        [
+          {
+            columns: [
+              { text: `${experience.role || 'Role'}, ${experience.company || 'Company'}`, style: 'strong', width: 'auto', alignment: 'bottom' },
+              { text: experience.link, style: ['small', 'link'], width: '*', alignment: 'bottom', color: theme[color].normal },
             ],
-            [{ text: `${experience.location}, ${experience.startDate} - ${experience.endDate}`, style: 'small' }],
-            [{ text: experience.description, style: 'content' }],
-          ],
-        },
-      },
-      index < arr.length - 1 ? {
-        text: ' ',
-        style: 'margin-8',
-      } : null,
-    ];
-  }
+            columnGap: 8,
+          },
+        ],
+        [{ text: `${experience.location || 'Location'}, ${experience.startDate || '2020. 01. 01'} - ${experience.endDate || 'Present'}`, style: 'small' }],
+        [{ text: experience.description || 'Describe your experience...', style: 'content' }],
+      ],
+    },
+  },
+  index < arr.length - 1 ? {
+    text: ' ',
+    style: 'margin-8',
+  } : null,
+]));
 
-  return [];
-});
-
-const buildOrganizationTable = (organizations: Organization[], color: Color) => organizations?.map((organization, index, arr) => {
-  if (Boolean(organization.title) && Boolean(organization.startDate) && Boolean(organization.endDate) && Boolean(organization.description)) {
-    return [
-      {
-        layout: 'noBorders',
-        table: {
-          headerRows: 1,
-          widths: ['*'],
-          body: [
-            [
-              {
-                columns: [
-                  { text: organization.title, style: 'strong', width: 'auto', alignment: 'bottom' },
-                  { text: organization.link, style: ['small', 'link'], width: '*', alignment: 'bottom', color: theme[color].normal },
-                ],
-                columnGap: 8,
-              },
+const buildOrganizationTable = (organizations: Organization[], color: Color) => organizations?.map((organization, index, arr) => ([
+  {
+    layout: 'noBorders',
+    table: {
+      headerRows: 1,
+      widths: ['*'],
+      body: [
+        [
+          {
+            columns: [
+              { text: organization.title || 'Organization', style: 'strong', width: 'auto', alignment: 'bottom' },
+              { text: organization.link, style: ['small', 'link'], width: '*', alignment: 'bottom', color: theme[color].normal },
             ],
-            [{ text: `${organization.location}, ${organization.startDate} - ${organization.endDate}`, style: 'small' }],
-            [{ text: organization.description, style: 'content' }],
-          ],
-        },
-      },
-      index < arr.length - 1 ? {
-        text: ' ',
-        style: 'margin-8',
-      } : null,
-    ];
-  }
-
-  return [];
-});
+            columnGap: 8,
+          },
+        ],
+        [{ text: `${organization.location || 'Location'}, ${organization.startDate || '2020. 01. 01'} - ${organization.endDate || 'Present'}`, style: 'small' }],
+        [{ text: organization.description || 'Describe your organization...', style: 'content' }],
+      ],
+    },
+  },
+  index < arr.length - 1 ? {
+    text: ' ',
+    style: 'margin-8',
+  } : null,
+]));
 
 const buildSocialMediaTable = (socialMedias: SocialMedia[]) => socialMedias?.map((socialMedia) => {
   if (Boolean(socialMedia.type) && Boolean(socialMedia.id)) {
@@ -120,39 +108,33 @@ const buildSocialMediaTable = (socialMedias: SocialMedia[]) => socialMedias?.map
   return [];
 });
 
-const buildEducation = (educations: Education[]) => educations?.map((education, index, arr) => {
-  if (Boolean(education.schoolName) && Boolean(education.schoolLocation) && Boolean(education.startDate) && Boolean(education.endDate)) {
-    return [
+const buildEducation = (educations: Education[]) => educations?.map((education, index, arr) => ([
+  {
+    text: [
       {
-        text: [
-          {
-            text: education.schoolName,
-            style: 'strong',
-          },
-          ' ',
-          {
-            text: `${education.schoolLocation}, ${education.startDate}~${education.endDate}`,
-            style: 'small',
-          },
-        ],
+        text: education.schoolName || 'School',
+        style: 'strong',
       },
+      ' ',
       {
-        text: education.degree,
-        style: 'content',
+        text: `${education.schoolLocation || 'Location'}, ${education.startDate || '2020. 01. 01'}~${education.endDate || 'Present'}`,
+        style: 'small',
       },
-      {
-        text: education.gpa != null ? `GPA: ${education.gpa}` : null,
-        style: 'content',
-      },
-      index < arr.length - 1 ? {
-        text: ' ',
-        style: 'margin-4',
-      } : null,
-    ];
-  }
-
-  return [];
-});
+    ],
+  },
+  {
+    text: education.degree,
+    style: 'content',
+  },
+  {
+    text: Boolean(education.gpa) ? `GPA: ${education.gpa}` : null,
+    style: 'content',
+  },
+  index < arr.length - 1 ? {
+    text: ' ',
+    style: 'margin-4',
+  } : null,
+]));
 
 const buildCertification = (certifications: Certification[]) => certifications?.map((certification, index, arr) => {
   if (Boolean(certification.certificationName)) {
@@ -184,7 +166,7 @@ const buildSkillTable = (skills: Skill[], color: Color) => skills?.map((skill, i
   if (Boolean(skill.skillName)) {
     return [
       {
-        text: skill.skillName,
+        text: skill.skillName || 'Skill',
         style: 'strong',
       },
       {
@@ -212,7 +194,7 @@ const buildSkillTable = (skills: Skill[], color: Color) => skills?.map((skill, i
 });
 
 const buildLanguageTable = (languages: Language[]) => languages?.map((language, index, arr) => {
-  if (Boolean(language.language) && Boolean(language.proficiency)) {
+  if (Boolean(language.language)) {
     return [
       {
         text: [

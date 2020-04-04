@@ -20,6 +20,7 @@ import {
   Image,
 } from '@chakra-ui/core';
 import { css } from '@emotion/core';
+import equal from 'fast-deep-equal';
 
 import { RequestStatus } from '@models/common';
 import { ResumeBody } from '@models/resume';
@@ -32,11 +33,11 @@ import sample from '@constants/sample';
 
 const initialData: ResumeBody = {
   type: 'default',
-  color: 'red',
-  firstName: '',
-  lastName: '',
+  color: 'purple',
+  firstName: 'John',
+  lastName: 'Doe',
   bio: '',
-  socialMedias: [{ type: 'behance', id: '' }],
+  socialMedias: [{ type: 'github', id: '' }],
   experiences: [{ company: '', role: '', location: '', startDate: '', endDate: '', description: '', link: '' }],
   organizations: [{ title: '', location: '', startDate: '', endDate: '', description: '', link: '' }],
   educations: [{ schoolName: '', schoolLocation: '', startDate: '', endDate: '', gpa: '', degree: '' }],
@@ -50,7 +51,13 @@ const getInitialData = (): ResumeBody => {
     const storedData = localStorage.getItem(key);
 
     if (storedData != null) {
-      return (JSON.parse(storedData));
+      const parsedStoredData = JSON.parse(storedData);
+
+      if (equal(parsedStoredData, sample)) {
+        return initialData;
+      }
+
+      return parsedStoredData;
     }
 
     return initialData;
@@ -161,10 +168,10 @@ const FormComponent = () => {
                       Color
                     </FormLabel>
                     <Field onBlur={handleBlur} as={Select} variant="flushed" focusBorderColor="blue.500" name="color" id="color">
+                      <option value="purple">Purple</option>
                       <option value="red">Red</option>
                       <option value="green">Green</option>
                       <option value="blue">Blue</option>
-                      <option value="purple">Purple</option>
                     </Field>
                   </Box>
                 </FormControl>
@@ -243,10 +250,10 @@ const FormComponent = () => {
                                 Social Media
                               </FormLabel>
                               <Field onBlur={handleBlur} as={Select} variant="flushed" focusBorderColor="blue.500" name={`socialMedias[${index}].type`} id={`social-medias[${index}].type`}>
+                                <option value="github">Github</option>
                                 <option value="behance">Behance</option>
                                 <option value="dribbble">Dribbble</option>
                                 <option value="facebook">Facebook</option>
-                                <option value="github">Github</option>
                                 <option value="instagram">Instagram</option>
                                 <option value="linkedin">LinkedIn</option>
                                 <option value="pinterest">Pinterest</option>

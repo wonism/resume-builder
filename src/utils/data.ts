@@ -1,11 +1,9 @@
 import { saveAs } from 'file-saver';
 
 export const fileToBase64 = (file: File | Blob) => new Promise<string>((resolve, reject) => {
-  console.log(file);
   const reader = new FileReader();
 
   reader.onload = () => {
-    console.log(reader.result);
     resolve(reader.result as string);
   };
   reader.onerror = error => reject(error);

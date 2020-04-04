@@ -27,7 +27,7 @@ import { ResumeBody } from '@models/resume';
 import useBuild from '@hooks/useBuild';
 import useDownload from '@hooks/useDownload';
 import { fileToBase64 } from '@utils/data';
-import { visuallyHidden } from '@constants/styles';
+import { visuallyHidden, buttonIcon } from '@constants/styles';
 import { key } from '@constants/storage';
 import sample from '@constants/sample';
 
@@ -67,6 +67,12 @@ const getInitialData = (): ResumeBody => {
 };
 
 const FormComponent = () => {
+  const resumeRef = useRef<HTMLElement>(null);
+
+  const handleScrollDownClick = useCallback(() => {
+    window.scrollTo(0, (resumeRef.current?.offsetTop ?? 9999) - 64);
+  }, []);
+
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
     document.body.classList.add('scroll-lock');
@@ -98,10 +104,6 @@ const FormComponent = () => {
 
   const [body, setBody] = useState<ResumeBody | null>(null);
   const [resume, resumeStatus] = useBuild(body);
-
-  useEffect(() => {
-    console.log({ resume, resumeStatus });
-  }, [resume, resumeStatus]);
 
   useDownload(body, downloadRequested, setDownloadRequested);
 
@@ -139,7 +141,7 @@ const FormComponent = () => {
   }, [numPages]);
 
   return (
-    <Box d="flex" alignItems="start" w="100%">
+    <Box d={['block', 'flex']} alignItems={['initial', 'start']} w="100%">
       <Formik
         initialValues={data}
         onSubmit={(values) => {
@@ -147,7 +149,7 @@ const FormComponent = () => {
         }}
         children={({ values, ...other }) => {
           return (
-            <Box px={4} w="320px" h="calc(100vh - 9.75rem)" css={css`overflow-y: auto;`}>
+            <Box px={4} w={['100%', '320px']} h={['auto', 'calc(100vh - 9.75rem)']} overflowY="auto">
               <Form action="/pdf" method="POST">
                 <FormControl as="fieldset" role={undefined}>
                   <Box p={5} shadow="md" rounded="md" borderWidth="1px">
@@ -681,32 +683,34 @@ const FormComponent = () => {
           );
         }}
       />
-      <Box px={4} flex={1} h="calc(100vh - 9.75rem)" css={css`overflow-y: auto;`}>
+      <Box ref={resumeRef} mt={[4, 0]} px={4} flex={['initial', 1]} h={['auto', 'calc(100vh - 9.75rem)']} overflowY="auto">
         {resume != null ? (
           <>
-            <Button leftIcon="download" variantColor="blue" type="button" onClick={() => { setDownloadRequested(true); }}>
+            <Button leftIcon="download" variantColor="blue" fontSize={[0, 'sm']} css={buttonIcon} type="button" onClick={() => { setDownloadRequested(true); }}>
               Download
             </Button>
-            <Button ml="4" leftIcon="delete" variantColor="red" type="button" onClick={() => { localStorage.removeItem(key); document.location.reload(); }}>
+            <Button ml="4" leftIcon="delete" variantColor="red" fontSize={[0, 'sm']} css={buttonIcon} type="button" onClick={() => { localStorage.removeItem(key); document.location.reload(); }}>
               Reset Data
             </Button>
-            <Button ml="4" leftIcon="view" variantColor="green" type="button" onClick={() => { setBody(sample as ResumeBody); }}>
+            <Button ml="4" leftIcon="view" variantColor="green" fontSize={[0, 'sm']} css={buttonIcon} type="button" onClick={() => { setBody(sample as ResumeBody); }}>
               Sample
             </Button>
-            <br />
-            <br />
+            <Box d={['none', 'block']}>
+              <br />
+            </Box>
             {numPages !== 1 ? (
               <>
                 <IconButton aria-label="Previous page" icon="arrow-left" variantColor="blue" onClick={handlePrevPage} isDisabled={pageNumber === 1} />
                 <IconButton ml="4" aria-label="Next page" icon="arrow-right" variantColor="blue" onClick={handleNextPage} isDisabled={pageNumber === numPages} />
               </>
             ) : null}
-            <Document file={resume} onLoadSuccess={handleLoadSuccess} css={css`position: relative;`} loading={(<Box>Building Resume...⚒</Box>)}>
+            <Document file={resume} onLoadSuccess={handleLoadSuccess} css={css`position: relative; overflow-x: auto;`} loading={(<Box>Building Resume...⚒</Box>)}>
               <Page pageNumber={pageNumber} loading={(<Box>Page Loading...</Box>)} />
             </Document>
           </>
         ) : null}
       </Box>
+      <IconButton d={['inline-block', 'none']} pos="fixed" bottom={4} right={4} size="sm" icon="view" aria-label="Scroll down to see your resume" variantColor="blue" type="button" onClick={handleScrollDownClick} />
     </Box>
   );
 };

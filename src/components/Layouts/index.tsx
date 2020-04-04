@@ -31,7 +31,9 @@ const globalStyle = css`
   }
 
   .scroll-lock {
-    overflow-y: hidden;
+    @media screen and (min-width: 30em) {
+      overflow-y: hidden;
+    }
   }
 `;
 
@@ -46,7 +48,16 @@ const Layouts = ({ element, props }: Props) => (
       <CSSReset />
       <Global styles={globalStyle} />
       <Header />
-      <Box as="main" mt="4rem" pt="1rem" pb="1rem" minH="calc(100vh - 7.75rem)" d="flex" alignItems="center" justifyContent="center">
+      <Box
+        as="main"
+        mt="4rem"
+        pt="1rem"
+        pb="1rem"
+        minH={['auto', 'calc(100vh - 7.75rem)']}
+        d="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
         {element}
       </Box>
       <Footer />

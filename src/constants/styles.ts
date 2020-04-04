@@ -11,3 +11,10 @@ export const visuallyHidden = css`
   white-space: nowrap;
   appearance: none;
 `;
+
+export const buttonIcon = css`
+  svg {
+    margin: auto;
+    font-size: 0.875rem;
+  }
+`;

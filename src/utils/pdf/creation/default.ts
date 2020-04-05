@@ -18,17 +18,13 @@ import { theme, svg, links } from '@constants/options';
 const { vfs } = vfsFonts.pdfMake;
 
 pdfMake.fonts = {
+  NotoSansKR: {
+    normal: 'NotoSansKR-Regular.otf',
+    bold: 'NotoSansKR-Bold.otf',
+  },
   Rubik: {
     normal: 'Rubik-Regular.ttf',
-    bold: 'Rubik-Medium.ttf',
-    italics: 'Rubik-Italic.ttf',
-    bolditalics: 'Rubik-MediumItalic.ttf',
-  },
-  Roboto: {
-    normal: 'Roboto-Regular.ttf',
-    bold: 'Roboto-Medium.ttf',
-    italics: 'Roboto-Italic.ttf',
-    bolditalics: 'Roboto-MediumItalic.ttf',
+    bold: 'Rubik-Bold.ttf',
   },
 };
 
@@ -248,7 +244,9 @@ const generate = ({
 
   const content = [
     {
-      text: `${firstName} ${lastName}`,
+      text: firstName.match(/[가-힣]/) != null && lastName.match(/[가-힣]/) != null
+        ? `${lastName} ${firstName}`
+        : `${firstName} ${lastName}`,
       style: 'title',
     },
     {
@@ -339,6 +337,9 @@ const generate = ({
       title: `${firstName}'s resume`,
       author: `${firstName} ${lastName}`,
     },
+    defaultStyle: {
+      font: 'NotoSansKR',
+    },
     pageSize: 'A4',
     pageMargins: [40, 60, 40, 60],
     content,
@@ -348,7 +349,6 @@ const generate = ({
     styles: {
       title: {
         fontSize: 28,
-        font: 'Rubik',
         alignment: 'center',
         lineHeight: 1.2,
         color: theme[color].darken,
@@ -361,32 +361,26 @@ const generate = ({
       },
       info: {
         fontSize: 10,
-        font: 'Roboto',
       },
       'margin-4': { fontSize: 4 },
       'margin-8': { fontSize: 8 },
       'margin-16': { fontSize: 16 },
       bio: {
         fontSize: 10,
-        font: 'Roboto',
       },
       strong: {
         bold: true,
         fontSize: 10,
-        font: 'Roboto',
       },
       social: {
         fontSize: 9,
-        font: 'Roboto',
       },
       small: {
         fontSize: 9,
-        font: 'Roboto',
         color: 'grey',
       },
       content: {
         fontSize: 9,
-        font: 'Roboto',
       },
       link: {
         decoration: 'underline',

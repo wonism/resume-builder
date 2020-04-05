@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[3],{"i6+/":function(n,t,e){"use strict";e.r(t);var c=e("q1tI"),u=e("Wbzz"),i=function(){return Object(c.useEffect)((function(){Object(u.b)("/",{replace:!0})}),[]),null},o=e("qKvR");t.default=function(){return Object(o.d)(i,null)}}}]);

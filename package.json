@@ -33,7 +33,7 @@
     "gatsby-plugin-offline": "^3.0.35",
     "gatsby-plugin-react-helmet": "^3.1.22",
     "gatsby-plugin-typescript": "^2.1.27",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "observable-hooks": "^2.2.0",
     "pdfmake": "^0.1.64",
     "react": "^16.12.0",
